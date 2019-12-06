@@ -11,7 +11,9 @@ const Div = styled.div`
     font-size: 15px;
 `
 const Button = styled.button`
-    width: 200px
+    width: 200px;
+    color:white;
+    background-color:midnightblue;
 `
 
 const Img = styled.img`
@@ -21,7 +23,7 @@ const Img = styled.img`
 
 function Produto (props) {
     return(
-        <Div id={props.id}>
+        <Div id={props.id} >
             <Img src={props.imagem}></Img>
             <span>{props.nome}</span><br/>
             <span>{"R$"}{props.preco}{",00"}</span>

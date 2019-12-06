@@ -6,7 +6,6 @@ const Section = styled.section`
   display:flex;
   flex-wrap:wrap;
 `
-//Teste
 const lista = [
   {
     id: 0 ,
@@ -57,7 +56,7 @@ class App extends React.Component {
     super(props)
     this.state ={
       ordem: "Crescente" , 
-      quantidade: [0,0,0,0,0,0,0] ,
+      quantidade: JSON.parse(localStorage.getItem("quantidade")) || [0,0,0,0,0,0,0] ,
       filtrosMax: Infinity ,
       filtrosMin: '' ,
       filtroNome: ''
@@ -82,6 +81,7 @@ removerItem = (event) => {
   })
 
   this.setState({quantidade: copy})
+  localStorage.setItem("quantidade", JSON.stringify(copy))
 }
 
 adicionarItem = (id) => {
@@ -93,13 +93,14 @@ adicionarItem = (id) => {
     }
   })
   this.setState({quantidade: copy})
+  localStorage.setItem("quantidade", JSON.stringify(copy))
 }
 
   render () {
     
     return (
       <div className="App"> 
-        <section>      
+        <section>    
           <fieldset>
             <legend>
               <h2>Filtros</h2>
@@ -109,7 +110,6 @@ adicionarItem = (id) => {
               placeholder="Valor mínimo:"
               value={this.state.filtrosMin}
               onChange={(event)=>{
-                console.log(event.target.value)
                 this.setState({
                   filtrosMin: event.target.value
                 })
@@ -137,7 +137,6 @@ adicionarItem = (id) => {
               placeholder="Buscar produto:"
               value={this.state.filtroNome}
               onChange={(event)=>{
-                console.log(event.target.value)
                 this.setState({
                   filtroNome: event.target.value
                 })
@@ -147,7 +146,6 @@ adicionarItem = (id) => {
             <select
               value={this.state.ordem}
               onChange={(event)=>{
-                console.log(event.target.value)
                 this.setState({
                   ordem: event.target.value
                 })
@@ -156,7 +154,7 @@ adicionarItem = (id) => {
               <option>Crescente</option>
               <option>Decrescente</option>
             </select>
-          </fieldset>
+          </fieldset><br/>
           <details>
             <summary>
               <strong>Carrinho:</strong>
@@ -164,7 +162,7 @@ adicionarItem = (id) => {
             {lista.map((produto, i)=>{
               if (this.state.quantidade[i] > 0)
               return (
-              <div id={produto.id}>
+              <div id={produto.id} key={produto.id}>
                 {produto.nome + ":" + " " + this.state.quantidade[i]}
                 <button onClick={this.removerItem}> X </button>
               </div> )
@@ -182,6 +180,7 @@ adicionarItem = (id) => {
             ).map((produto)=>
               <Produto 
                 id={produto.id}
+                key={produto.id}
                 imagem={produto.imagem}
                 preco={produto.preco}
                 nome={produto.nome}
