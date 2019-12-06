@@ -58,12 +58,38 @@ class App extends React.Component {
     super(props)
     this.state ={
       ordemCrescente: true , 
-      quantidade: [0,0,0,0,0,0,0] ,
+      quantidade: [0,0,9,0,3,0,0] ,
       filtrosMax: Infinity ,
       filtrosMin: 0 ,
       filtroNome: ''
     }
   }
+
+somar = () => {
+  let total = 0
+  for (let i=0; i<7; i++) {
+    total += this.state.quantidade[i] * lista[i].preco
+  }
+  return (
+    total
+  )
+}
+
+removerItem = (event) => {
+  const copy = this.state.quantidade.map((quant, i) => {
+    if (i === event.target.parentNode.id) {
+      console.log("if")
+      return (
+      quant-1
+
+    )} else {
+      console.log("else")
+      return (quant)
+    }
+  })
+  this.setState({quantidade: copy})
+  
+}
 
   render () {
 
@@ -86,13 +112,23 @@ class App extends React.Component {
             </select>
 
           </fieldset>
-          <div>
-            <h2>Carrinho:</h2>
-            {"item: "}
-            {" 0 "}
-            {" (remover)"}<br/>
-            {"soma:0"}
-          </div>
+          <details>
+            <summary>
+              <strong>Carrinho:</strong>
+            </summary>
+            {lista.map((produto, i)=>{
+              if (this.state.quantidade[i] > 0)
+              return (
+              <div id={produto.id}>
+                {produto.nome + ":" + " " + this.state.quantidade[i]}
+                <button onClick={this.removerItem}> X </button>
+              </div> )
+            })
+                
+            } 
+            <strong>Total: </strong>
+            {this.somar ()}
+          </details>
         </section>
         <Section>
           {lista.map((produto)=>
